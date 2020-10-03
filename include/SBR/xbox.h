@@ -19,7 +19,7 @@ public:
 
     bool isConnected();
 
-    int playerNumber();
+    int playerNumber() const;
 
     bool isXPressed();
     bool isYPressed();

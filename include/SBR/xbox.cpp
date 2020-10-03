@@ -5,6 +5,7 @@ XboxController::XboxController(int playerNumber)
 {
 	if (playerNumber < 1 || playerNumber > 4) throw std::invalid_argument("Input a playerNumber between 1 and 4");
 	_controllerNum = playerNumber-1;
+	update();
 }
 
 #ifdef _WIN64
@@ -37,7 +38,7 @@ bool XboxController::isConnected() {
 #endif
 }
 
-int XboxController::playerNumber() {
+int XboxController::playerNumber() const {
 	return this->_controllerNum + 1;
 }
 
@@ -47,18 +48,21 @@ bool XboxController::isXPressed()
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_X) > 0;
 #endif
 }
+
 bool XboxController::isYPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_Y) > 0;
 #endif
 }
+
 bool XboxController::isAPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_A) > 0;
 #endif
 }
+
 bool XboxController::isBPressed()
 {
 #ifdef _WIN64
