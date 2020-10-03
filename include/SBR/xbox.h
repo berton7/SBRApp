@@ -1,17 +1,22 @@
 #ifndef SBR_XBOX_H
 #define SBR_XBOX_H
-#ifdef _WIN32
+#ifdef _WIN64
     #include <Windows.h>
     #include <Xinput.h>
 #endif
 
 class XboxController {
 private:
+	int _controllerNum;
+#ifdef _WIN64
     XINPUT_STATE _controllerState;
-    int _controllerNum;
+	XINPUT_STATE getState();
+#endif
 public:
     XboxController(int playerNumber = 1);
-    XINPUT_STATE getState();
+
+    void update();
+
     bool isConnected();
 
     int playerNumber();
