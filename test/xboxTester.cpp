@@ -4,7 +4,7 @@
 #include <unistd.h>
 #define Sleep(ms) (usleep(ms * 1000))
 #endif
-#include "SBR/xbox.h"
+#include "SBR/controller.h"
 
 
 int main()

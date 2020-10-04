@@ -1,6 +1,5 @@
 ﻿#include <iostream>
-#include "SBR/xbox.h"
-//#include "serial.h"
+#include "SBR/controller.h"
 
 using namespace std;
 
@@ -41,6 +40,5 @@ int main() {
 	}
 	else {
 		cout << "Not using controller" << endl;
-
 	}
 }

@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.8)
 project ("SBRApp")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(SBRController include/SBR/xbox.cpp include/SBR/xbox.h)
+add_library(SBRController include/SBR/controller.cpp include/SBR/controller.h)
 include_directories(include)
 
 if (WIN32)

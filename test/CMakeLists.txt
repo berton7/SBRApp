@@ -1,3 +1,3 @@
-add_executable(ControllerTest xboxTester.cpp)
-add_dependencies(ControllerTest SBRController)
-target_link_libraries(ControllerTest ${SBRControllerLibs})
+add_executable(SBRControllerTest xboxTester.cpp)
+add_dependencies(SBRControllerTest SBRController)
+target_link_libraries(SBRControllerTest ${SBRControllerLibs})

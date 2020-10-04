@@ -1,4 +1,4 @@
-#include "SBR/xbox.h"
+#include "SBR/controller.h"
 #include <stdexcept>
 #ifdef __linux__
 #include <fcntl.h>
