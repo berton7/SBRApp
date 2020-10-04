@@ -1,5 +1,6 @@
 #include "SBR/controller.h"
 #include <stdexcept>
+#include <iostream>
 #ifdef __linux__
 #include <fcntl.h>
 #include <cstdio>
@@ -14,7 +15,7 @@ XboxController::XboxController(int playerNumber) {
 #ifdef __linux__
 	std::ostringstream device;
 	device << "/dev/input/js" << _controllerNum;
-	js = open(device.str().c_str(), O_RDONLY);
+	js = open(device.str().c_str(), O_RDONLY | O_NONBLOCK);
 	if (js == -1)
 		perror("Could not open joystick");
 	else {
@@ -55,7 +56,8 @@ void XboxController::update()
 	bytes = read(js, &event, sizeof(event));
 	if (bytes==-1)
 	{
-		connected = false;
+		if (errno != EAGAIN)
+			connected = false;
 		return;
 	}
 
