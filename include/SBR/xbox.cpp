@@ -1,11 +1,29 @@
 #include "SBR/xbox.h"
 #include <stdexcept>
+#ifdef __linux__
+#include <fcntl.h>
+#include <cstdio>
+#include <unistd.h>
+#include <string>
+#include <sstream>
+#endif
 
-XboxController::XboxController(int playerNumber)
-{
+XboxController::XboxController(int playerNumber) {
 	if (playerNumber < 1 || playerNumber > 4) throw std::invalid_argument("Input a playerNumber between 1 and 4");
-	_controllerNum = playerNumber-1;
+	_controllerNum = playerNumber - 1;
+#ifdef __linux__
+	std::ostringstream device;
+	device << "/dev/input/js" << _controllerNum;
+	js = open(device.str().c_str(), O_RDONLY);
+	if (js == -1)
+		perror("Could not open joystick");
+	else {
+		connected = true;
+#endif
 	update();
+#ifdef __linux__
+	}
+#endif
 }
 
 #ifdef _WIN64
@@ -24,6 +42,70 @@ void XboxController::update()
 {
 #ifdef _WIN64
 	getState();
+#elif defined(__linux__)
+	ssize_t bytes;
+	bytes = read(js, &event, sizeof(event));
+	if (bytes==-1)
+	{
+		connected = false;
+		return;
+	}
+
+	// update state accordingly
+	switch(event.type)
+	{
+		case JS_EVENT_BUTTON:
+			int mask;
+			if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_Y)
+				mask = GAMEPAD_Y;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_SELECT)
+				mask = GAMEPAD_SELECT;
+			/*
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+
+			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
+				mask = GAMEPAD_A;
+			 */
+
+			if (event.value)
+				buttonState |= mask;
+			else
+				buttonState &= !mask;
+			break;
+		case JS_EVENT_AXIS:
+			break;
+		case JS_EVENT_INIT:
+			break;
+		default:
+			break;
+	}
 #endif
 }
 
@@ -35,6 +117,8 @@ bool XboxController::isConnected() {
 	// Get the state
 	DWORD Result = XInputGetState(_controllerNum, &_controllerState);
 	return Result == ERROR_SUCCESS;
+#elif defined(__linux__)
+	return connected;
 #endif
 }
 
@@ -53,6 +137,8 @@ bool XboxController::isYPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_Y) > 0;
+#elif defined(__linux__)
+	return buttonState & GAMEPAD_Y;
 #endif
 }
 
@@ -60,6 +146,8 @@ bool XboxController::isAPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_A) > 0;
+#elif defined(__linux__)
+	return buttonState & GAMEPAD_A;
 #endif
 }
 

@@ -8,9 +8,14 @@ include_directories(include)
 
 if (WIN32)
     set(SBRControllerLibs SBRController XInput)
-endif(WIN32)
+elseif(UNIX)
+    set(SBRControllerLibs SBRController)
+endif()
 
 add_executable(MainSBRApp app/main.cpp)
 target_link_libraries(MainSBRApp ${SBRControllerLibs})
 
 add_subdirectory ("test")
+
+add_executable(joystick joystick.cpp)
+target_link_libraries(joystick ${SBRControllerLibs})
