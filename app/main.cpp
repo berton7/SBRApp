@@ -1,4 +1,7 @@
 ﻿#include <iostream>
+#ifdef __linux__
+#include <memory>
+#endif
 #include "SBR/controller.h"
 
 using namespace std;
