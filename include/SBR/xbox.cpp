@@ -267,7 +267,7 @@ short XboxController::rightStickX()
 #ifdef _WIN64
 	return getState().Gamepad.sThumbRX;
 #elif defined(__linux__)
-	return rightAnalogAx.y;
+	return -rightAnalogAx.y;
 #endif
 }
 
@@ -276,7 +276,7 @@ short XboxController::rightStickY()
 #ifdef _WIN64
 	return getState().Gamepad.sThumbRY;
 #elif defined(__linux__)
-	return rightAnalogAx.x;
+	return -rightAnalogAx.x;
 #endif
 }
 

@@ -44,7 +44,7 @@ typedef std::bitset<8> byte;
 class Axis
 {
 public:
-	uint16_t x, y;
+	short x, y;
 };
 #endif
 

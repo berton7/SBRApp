@@ -32,14 +32,14 @@ int main()
 		x->update();
 		std::cout << "\r";
 		
-		//std::cout << x->isXPressed() << x->isYPressed() << x->isAPressed() << x->isBPressed();
+		std::cout << x->isXPressed() << x->isYPressed() << x->isAPressed() << x->isBPressed();
 		std::cout << x->isDPadLeftPressed() << x->isDPadUpPressed() << x->isDPadDownPressed() << x->isDPadRightPressed();
-		//std::cout << x->isLeftTriggerButtonPressed() << x->isRightTriggerButtonPressed();
+		std::cout << x->isLeftTriggerButtonPressed() << x->isRightTriggerButtonPressed();
 
 
-		//std::cout << " " << x->leftStickX() << " " << x->leftStickY() << " " << x->rightStickX() << " " << x->rightStickY();
+		std::cout << " " << x->leftStickX() << " " << x->leftStickY() << " " << x->rightStickX() << " " << x->rightStickY();
 
-		//std::cout << " " << x->leftTrigger() << " " << x->rightTrigger();
+		std::cout << " " << x->leftTrigger() << " " << x->rightTrigger();
 
 		std::cout << "                    ";
 		/*
@@ -48,7 +48,7 @@ int main()
 
 
 		fflush(stdout);
-		usleep(1000);
+		usleep(10000);
 	}
 
 
