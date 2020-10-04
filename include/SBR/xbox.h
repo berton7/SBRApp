@@ -39,8 +39,6 @@
 #endif
 
 #ifdef __linux__
-typedef std::bitset<8> byte;
-
 class Axis
 {
 public:
@@ -63,6 +61,7 @@ private:
 #endif
 public:
     XboxController(int playerNumber = 1);
+    ~XboxController();
 
     void update();
 
@@ -88,13 +87,8 @@ public:
     short rightStickX();
     short rightStickY();
 
-#ifdef _WIN64
-    byte leftTrigger();
-    byte rightTrigger();
-#elif defined(__linux__)
     short leftTrigger();
     short rightTrigger();
-#endif
 };
 
 #endif

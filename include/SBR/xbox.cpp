@@ -26,6 +26,14 @@ XboxController::XboxController(int playerNumber) {
 #endif
 }
 
+XboxController::~XboxController()
+{
+#ifdef _WIN64
+#elif defined(__linux__)
+	close(js);
+#endif
+}
+
 #ifdef _WIN64
 XINPUT_STATE XboxController::getState(){
 	// Zeroise the state
@@ -283,7 +291,7 @@ short XboxController::rightStickY()
 short XboxController::leftTrigger()
 {
 #ifdef _WIN64
-	return getState().Gamepad.bLeftTrigger;
+	return getState().Gamepad.bLeftTrigger * 257 - 32768;
 #elif defined(__linux__)
 	return triggerAx.x;
 #endif
@@ -292,7 +300,7 @@ short XboxController::leftTrigger()
 short XboxController::rightTrigger()
 {
 #ifdef _WIN64
-	return getState().Gamepad.bRightTrigger;
+	return getState().Gamepad.bRightTrigger * 257 - 32768;
 #elif defined(__linux__)
 	return -triggerAx.y;
 #endif

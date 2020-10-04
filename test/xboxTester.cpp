@@ -1,6 +1,9 @@
 #include <iostream>
+#ifdef __linux__
 #include <memory>
 #include <unistd.h>
+#define Sleep(ms) (usleep(ms * 1000))
+#endif
 #include "SBR/xbox.h"
 
 
@@ -42,17 +45,16 @@ int main()
 		std::cout << " " << x->leftTrigger() << " " << x->rightTrigger();
 
 		std::cout << "                    ";
-		/*
-		Sleep(10);
-		 */
 
-
+#ifdef __linux__
 		fflush(stdout);
-		usleep(10000);
+#endif
+		Sleep(10);
 	}
 
-
 	std::cout << std::endl << "Controller disconnected." << std::endl;
+#ifdef _WIN64
 	system("pause");
+#endif
 	return 0;
 }
