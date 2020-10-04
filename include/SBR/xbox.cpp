@@ -56,43 +56,53 @@ void XboxController::update()
 	{
 		case JS_EVENT_BUTTON:
 			int mask;
-			if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+			switch(event.number) {
+				case EVENT_NUMBER_GAMEPAD_A:
+					mask = GAMEPAD_A;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_Y)
-				mask = GAMEPAD_Y;
+				case EVENT_NUMBER_GAMEPAD_B:
+					mask = GAMEPAD_B;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_SELECT)
-				mask = GAMEPAD_SELECT;
-			/*
+				case EVENT_NUMBER_GAMEPAD_X:
+					mask = GAMEPAD_X;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_Y:
+					mask = GAMEPAD_Y;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_LEFT_SHOULDER:
+					mask = GAMEPAD_LEFT_SHOULDER;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_RIGHT_SHOULDER:
+					mask = GAMEPAD_RIGHT_SHOULDER;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_LEFT_THREE:
+					mask = GAMEPAD_LEFT_THREE;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_RIGHT_THREE:
+					mask = GAMEPAD_RIGHT_THREE;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_SELECT:
+					mask = GAMEPAD_SELECT;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
+				case EVENT_NUMBER_GAMEPAD_START:
+					mask = GAMEPAD_START;
+					break;
 
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
-
-			else if (event.number == EVENT_NUMBER_GAMEPAD_A)
-				mask = GAMEPAD_A;
-			 */
+				case EVENT_NUMBER_GAMEPAD_HOME:
+					mask = GAMEPAD_HOME;
+					break;
+				default:
+					break;
+			}
 
 			if (event.value)
 				buttonState |= mask;
@@ -100,6 +110,24 @@ void XboxController::update()
 				buttonState &= !mask;
 			break;
 		case JS_EVENT_AXIS:
+			Axis* axis;
+			if (event.number == EVENT_NUMBER_GAMEPAD_LEFT_STICK_X ||
+				event.number == EVENT_NUMBER_GAMEPAD_LEFT_STICK_Y)
+				axis = &leftAnalogAx;
+			else if (event.number == EVENT_NUMBER_GAMEPAD_RIGHT_STICK_X ||
+					 event.number == EVENT_NUMBER_GAMEPAD_RIGHT_STICK_Y)
+				axis = &rightAnalogAx;
+			else if (event.number == EVENT_NUMBER_GAMEPAD_LEFT_TRIGGER ||
+					 event.number == EVENT_NUMBER_GAMEPAD_RIGHT_TRIGGER)
+				axis = &triggerAx;
+
+
+			// other //
+
+			if (event.number % 2 == 0)
+				axis->x = event.value;
+			else
+				axis->y = event.value;
 			break;
 		case JS_EVENT_INIT:
 			break;
@@ -130,6 +158,8 @@ bool XboxController::isXPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_X) > 0;
+#elif defined(__linux__)
+	return buttonState & GAMEPAD_X;
 #endif
 }
 
@@ -155,6 +185,8 @@ bool XboxController::isBPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_B) > 0;
+#elif defined(__linux__)
+	return buttonState & GAMEPAD_B;
 #endif
 }
 
@@ -190,6 +222,8 @@ bool XboxController::isLeftTriggerButtonPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) > 0;
+#elif defined(__linux__)
+	return buttonState & GAMEPAD_LEFT_SHOULDER;
 #endif
 }
 
@@ -197,6 +231,8 @@ bool XboxController::isRightTriggerButtonPressed()
 {
 #ifdef _WIN64
 	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) > 0;
+#elif defined(__linux__)
+	return buttonState & GAMEPAD_RIGHT_SHOULDER;
 #endif
 }
 
@@ -204,6 +240,8 @@ short XboxController::leftStickX()
 {
 #ifdef _WIN64
 	return getState().Gamepad.sThumbLX;
+#elif defined(__linux__)
+	return leftAnalogAx.x;
 #endif
 }
 
@@ -211,6 +249,8 @@ short XboxController::leftStickY()
 {
 #ifdef _WIN64
 	return getState().Gamepad.sThumbLY;
+#elif defined(__linux__)
+	return leftAnalogAx.y;
 #endif
 }
 
@@ -218,6 +258,8 @@ short XboxController::rightStickX()
 {
 #ifdef _WIN64
 	return getState().Gamepad.sThumbRX;
+#elif defined(__linux__)
+	return rightAnalogAx.x;
 #endif
 }
 
@@ -225,19 +267,25 @@ short XboxController::rightStickY()
 {
 #ifdef _WIN64
 	return getState().Gamepad.sThumbRY;
+#elif defined(__linux__)
+	return rightAnalogAx.y;
 #endif
 }
 
-byte XboxController::leftTrigger()
+short XboxController::leftTrigger()
 {
 #ifdef _WIN64
 	return getState().Gamepad.bLeftTrigger;
+#elif defined(__linux__)
+	return triggerAx.x;
 #endif
 }
 
-byte XboxController::rightTrigger()
+short XboxController::rightTrigger()
 {
 #ifdef _WIN64
 	return getState().Gamepad.bRightTrigger;
+#elif defined(__linux__)
+	return triggerAx.y;
 #endif
 }

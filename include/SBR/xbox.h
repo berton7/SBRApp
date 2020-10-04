@@ -59,7 +59,7 @@ private:
 	bool connected;
 	struct js_event event;
 	uint16_t buttonState;
-	Axis leftAnalogAx, rightAnalogAx, leftTriggerAx, rightTriggerAx, dpadAx;
+	Axis leftAnalogAx, rightAnalogAx, triggerAx, dpadAx;
 #endif
 public:
     XboxController(int playerNumber = 1);
@@ -88,8 +88,13 @@ public:
     short rightStickX();
     short rightStickY();
 
+#ifdef _WIN64
     byte leftTrigger();
     byte rightTrigger();
+#elif defined(__linux__)
+    short leftTrigger();
+    short rightTrigger();
+#endif
 };
 
 #endif

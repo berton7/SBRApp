@@ -1,49 +1,58 @@
 #include <iostream>
+#include <memory>
+#include <unistd.h>
 #include "SBR/xbox.h"
 
-using namespace std;
 
 int main()
 {
-	unique_ptr<XboxController> x;
+	std::unique_ptr<XboxController> x;
 	for (int i = 1; i < 5; i++) {
-		x = make_unique<XboxController>(i);
+		x = std::make_unique<XboxController>(i);
 		if (x->isConnected()) {
 			break;
 		}
 	}
 	int n;
 	while (!x->isConnected()) {
-		cout << "No controller revealed. Are you sure you connected one?" << endl;
-		cout << "If so, please input the player number: ";
-		cin >> n;
+		std::cout << "No controller revealed. Are you sure you connected one?" << std::endl;
+		std::cout << "If so, please input the player number: ";
+		std::cin >> n;
 		if (n < 1 || n>4)
 			do {
-				cout << "Please input a number between 1 and 4: ";
-				cin >> n;
+				std::cout << "Please input a number between 1 and 4: ";
+				std::cin >> n;
 			} while (n < 1 || n>4);
-		x = make_unique<XboxController>(n);
+		x = std::make_unique<XboxController>(n);
 	}
 
 
-	cout << "Controller for player " << x->playerNumber() << " succesfully added." << endl;
+	std::cout << "Controller for player " << x->playerNumber() << " succesfully added." << std::endl;
 	while (x->isConnected()) {
-		cout << "\r";
+		x->update();
+		std::cout << "\r";
 		
-		cout << x->isXPressed() << x->isYPressed() << x->isAPressed() << x->isBPressed();
-		cout << x->isDPadLeftPressed() << x->isDPadUpPressed() << x->isDPadDownPressed() << x->isDPadRightPressed();
-		cout << x->isLeftTriggerButtonPressed() << x->isRightTriggerButtonPressed();
-		
-		cout << " " << x->leftStickX() << " " << x->leftStickY() << " " << x->rightStickX() << " " << x->rightStickY();
-		
-		cout << " " << (short)x->leftTrigger() << " " << (short)x->rightTrigger();
+		//std::cout << x->isXPressed() << x->isYPressed() << x->isAPressed() << x->isBPressed();
+		//std::cout << x->isDPadLeftPressed() << x->isDPadUpPressed() << x->isDPadDownPressed() << x->isDPadRightPressed();
+		//std::cout << x->isLeftTriggerButtonPressed() << x->isRightTriggerButtonPressed();
 
-		cout << "                    ";
+
+		std::cout << " " << x->leftStickX() << " " << x->leftStickY() << " " << x->rightStickX() << " " << x->rightStickY();
+
+		std::cout << " " << x->leftTrigger() << " " << x->rightTrigger();
+
+		std::cout << "                    ";
+		/*
 		Sleep(10);
+		 */
+
+
+		fflush(stdout);
+		usleep(1000);
 	}
 
 
-	cout << endl << "Controller disconnected." << endl;
+	std::cout << std::endl << "Controller disconnected." << std::endl;
 	system("pause");
 	return 0;
 }
