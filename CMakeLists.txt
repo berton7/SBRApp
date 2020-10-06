@@ -15,4 +15,7 @@ endif()
 add_executable(MainSBRApp app/main.cpp)
 target_link_libraries(MainSBRApp ${SBRControllerLibs})
 
-add_subdirectory ("test")
+option(BUILD_TESTS "Build some tests" OFF)
+if(${BUILD_TESTS})
+    add_subdirectory ("test")
+endif()
