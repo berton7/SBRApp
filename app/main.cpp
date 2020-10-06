@@ -23,7 +23,7 @@ int main() {
 			cout << "Only y/n allowed: ";
 			cin >> s;
 		}
-		useController = (s == "y");
+		useController = (s == "n");
 	}
 
 	if (useController) {
