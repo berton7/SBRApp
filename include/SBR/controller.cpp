@@ -167,7 +167,7 @@ int XboxController::playerNumber() const {
 bool XboxController::isXPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_X) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_X) > 0;
 #elif defined(__linux__)
 	return buttonState & GAMEPAD_X;
 #endif
@@ -176,7 +176,7 @@ bool XboxController::isXPressed()
 bool XboxController::isYPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_Y) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_Y) > 0;
 #elif defined(__linux__)
 	return buttonState & GAMEPAD_Y;
 #endif
@@ -185,7 +185,7 @@ bool XboxController::isYPressed()
 bool XboxController::isAPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_A) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_A) > 0;
 #elif defined(__linux__)
 	return buttonState & GAMEPAD_A;
 #endif
@@ -194,7 +194,7 @@ bool XboxController::isAPressed()
 bool XboxController::isBPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_B) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_B) > 0;
 #elif defined(__linux__)
 	return buttonState & GAMEPAD_B;
 #endif
@@ -203,7 +203,7 @@ bool XboxController::isBPressed()
 bool XboxController::isDPadUpPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) > 0;
 #elif defined(__linux__)
 	return dpadAx.y > 0;
 #endif
@@ -212,7 +212,7 @@ bool XboxController::isDPadUpPressed()
 bool XboxController::isDPadDownPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) > 0;
 #elif defined(__linux__)
 	return dpadAx.y < 0;
 #endif
@@ -221,7 +221,7 @@ bool XboxController::isDPadDownPressed()
 bool XboxController::isDPadLeftPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) > 0;
 #elif defined(__linux__)
 	return dpadAx.x < 0;
 #endif
@@ -230,7 +230,7 @@ bool XboxController::isDPadLeftPressed()
 bool XboxController::isDPadRightPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) > 0;
 #elif defined(__linux__)
 	return dpadAx.x > 0;
 #endif
@@ -239,7 +239,7 @@ bool XboxController::isDPadRightPressed()
 bool XboxController::isLeftTriggerButtonPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) > 0;
 #elif defined(__linux__)
 	return buttonState & GAMEPAD_LEFT_SHOULDER;
 #endif
@@ -248,7 +248,7 @@ bool XboxController::isLeftTriggerButtonPressed()
 bool XboxController::isRightTriggerButtonPressed()
 {
 #ifdef _WIN64
-	return (getState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) > 0;
+	return (_controllerState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) > 0;
 #elif defined(__linux__)
 	return buttonState & GAMEPAD_RIGHT_SHOULDER;
 #endif
@@ -257,7 +257,7 @@ bool XboxController::isRightTriggerButtonPressed()
 short XboxController::leftStickX()
 {
 #ifdef _WIN64
-	return getState().Gamepad.sThumbLX;
+	return _controllerState.Gamepad.sThumbLX;
 #elif defined(__linux__)
 	return leftAnalogAx.x;
 #endif
@@ -266,7 +266,7 @@ short XboxController::leftStickX()
 short XboxController::leftStickY()
 {
 #ifdef _WIN64
-	return getState().Gamepad.sThumbLY;
+	return _controllerState.Gamepad.sThumbLY;
 #elif defined(__linux__)
 	return leftAnalogAx.y;
 #endif
@@ -275,7 +275,7 @@ short XboxController::leftStickY()
 short XboxController::rightStickX()
 {
 #ifdef _WIN64
-	return getState().Gamepad.sThumbRX;
+	return _controllerState.Gamepad.sThumbRX;
 #elif defined(__linux__)
 	return -rightAnalogAx.y;
 #endif
@@ -284,7 +284,7 @@ short XboxController::rightStickX()
 short XboxController::rightStickY()
 {
 #ifdef _WIN64
-	return getState().Gamepad.sThumbRY;
+	return _controllerState.Gamepad.sThumbRY;
 #elif defined(__linux__)
 	return -rightAnalogAx.x;
 #endif
@@ -293,7 +293,7 @@ short XboxController::rightStickY()
 short XboxController::leftTrigger()
 {
 #ifdef _WIN64
-	return getState().Gamepad.bLeftTrigger * 257 - 32768;
+	return _controllerState.Gamepad.bLeftTrigger * 257 - 32768;
 #elif defined(__linux__)
 	return triggerAx.x;
 #endif
@@ -302,7 +302,7 @@ short XboxController::leftTrigger()
 short XboxController::rightTrigger()
 {
 #ifdef _WIN64
-	return getState().Gamepad.bRightTrigger * 257 - 32768;
+	return _controllerState.Gamepad.bRightTrigger * 257 - 32768;
 #elif defined(__linux__)
 	return -triggerAx.y;
 #endif
